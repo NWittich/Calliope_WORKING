@@ -111,16 +111,18 @@ void onConnected(MicroBitEvent)
         uart->send(ManagedString("\r\n"));
         
         uart->send(ManagedString("\r\n"));
-        
+        uBit.sleep(1000);
     }
 }
 
 
 void onDisconnected(MicroBitEvent)
 {
-    uBit.display.scroll("D");
-    uBit.rgb.setColour(0xff, 0x66, 0x66, 0xff);
     connected = 0;
+    uBit.rgb.setColour(0xff, 0x66, 0x66, 0xff);
+    uBit.display.scroll("D");
+    
+    
 }
 
 void pressedButtonA(MicroBitEvent)
@@ -140,7 +142,7 @@ void pressedButtonA(MicroBitEvent)
         //LED OFF
         uBit.rgb.off();
     }
-    uBit.display.clear();
+    //uBit.display.clear();
 }
 
 const int threshold = 519;
@@ -260,7 +262,7 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, pressedButtonB);
     uart = new MicroBitUARTService(*uBit.ble, 32, 32);
 
-    //new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
+    new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
     //uBit.display.scroll(ManagedString("MicroBitTemperatureService\r\n"));
     
     //while(true){
