@@ -1,25 +1,16 @@
 #include "MicroBit.h"
 #include "MicroBitUARTService.h"
-#include "MicroBitAccelerometerService.h"
-#include "MicroBitMagnetometerService.h"
-#include "MicroBitTemperatureService.h"
-#include "Storage.h"
-#include "Interpreter.h"
-#include <cmath>
 
-
+//Deklaration von Variablen
 MicroBit uBit;
 MicroBitUARTService *uart;
-MicroBitAccelerometerService *accservice;
-MicroBitMagnetometerService *magservice;
-MicroBitTemperatureService *tempservice;
-//Prototype
 
+//Prototype von Funktionen
 int getLightValue(void);
 int selfMicroImpl(void);
 static int connected = 0;
 
-
+//Diese Funktion liesst den Lichtsensor aus und gibt einen Wert zwischen 0-100 zurück
 int getLightValue(void)
     {
         int value = 0;
@@ -27,6 +18,9 @@ int getLightValue(void)
         return (value * 0.3921);      
     }
 
+//Diese Funktion definiert,dass p3 ein Eingangssignal ist und über die Schleife 
+//werden 100 Samples gemessen, der hoechste Wert wird in der Variablen max gespeichert.
+//Der Rückgabewert ist ein Int zwischen 0-100
 int selfMicroImpl(void){
     AnalogIn microin(p3);
 
@@ -59,6 +53,8 @@ int selfMicroImpl(void){
     
 }
 
+//Sobald ein Geraet mit dem Calliope verbunden ist, wird diese Funktion aufgerufen (siehe main) --> messageBus.listen 
+// Hier werden Mikro, Temperatur, Licht, Kompass-und Beschleunigungssensor ausgelesen und über Bluetooth verschickt
 void onConnected(MicroBitEvent)
 {
     uBit.display.scroll("C");
@@ -97,11 +93,11 @@ void onConnected(MicroBitEvent)
         uart->send(ManagedString("\r\n"));
       
         uart->send(ManagedString("\r\n"));
-        uBit.sleep(1000);
+        uBit.sleep(100);
     }
 }
 
-
+// Falls die Verbindung getrennt wird erscheint ein "D" auf dem Calliope --> messageBus.listen
 void onDisconnected(MicroBitEvent)
 {
     connected = 0;
@@ -109,6 +105,8 @@ void onDisconnected(MicroBitEvent)
     uBit.display.scroll("D");    
 }
 
+//In der main ist ein messageBus.lister auf den Calliope Button A gesetzt. 
+//Bei betatigen des Buttons wird diese Funktion aufgerufen.
 void pressedButtonA(MicroBitEvent)
 {
     uBit.display.print("A");
@@ -145,6 +143,8 @@ int pixel_from_g(int value)
     return x;
 }
 
+//In der main ist ein messageBus.lister auf den Calliope Button B gesetzt. 
+//Bei betatigen des Buttons wird diese Funktion aufgerufen.
 void pressedButtonB(MicroBitEvent)
 {
         for (int i=0 ; i < 50; i++){
@@ -184,6 +184,7 @@ int main()
     //WHITE
     uBit.rgb.setColour(0xff, 0xff, 0xff, 0xff);
 
+    //In diesen Zeilen sind die MessageBus Listener definiert. 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, pressedButtonA);
@@ -191,12 +192,11 @@ int main()
     
     //Start of BluetoothUARTService
     uart = new MicroBitUARTService(*uBit.ble, 32, 32);
+    //Start der zusätzlichen Services
+    new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
+    new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
+    new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
 
-    tempservice = new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
-    magservice = new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
-    accservice = new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
-    //uBit.display.scroll(ManagedString("MicroBitTemperatureService\r\n"));
-    
-    
+    //Falls der Calliope diese Funktion aufruft kann er in den Sleep Modus gehen.    
     release_fiber();
 }
