@@ -86,13 +86,13 @@ void onConnected(MicroBitEvent)
         uart->send(ManagedString("\r\n"));
         uBit.sleep(20);
 
-        uart->send(ManagedString("MX:"));
+        uart->send(ManagedString("AX:"));
         uart->send(ManagedString(uBit.accelerometer.getX()));
         uart->send(ManagedString("\r\n"));
-        uart->send(ManagedString("MY:"));
+        uart->send(ManagedString("AY:"));
         uart->send(ManagedString(uBit.accelerometer.getY()));
         uart->send(ManagedString("\r\n"));
-        uart->send(ManagedString("MZ:"));
+        uart->send(ManagedString("AZ:"));
         uart->send(ManagedString(uBit.accelerometer.getZ()));
         uart->send(ManagedString("\r\n"));
       
