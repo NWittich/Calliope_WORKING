@@ -4,11 +4,14 @@
 //Deklaration von Variablen
 MicroBit uBit;
 MicroBitUARTService *uart;
+ManagedString msg;
 
 //Prototype von Funktionen
 int getLightValue(void);
 int selfMicroImpl(void);
+void lightLevelSend(MicroBitEvent);
 static int connected = 0;
+
 
 //Diese Funktion liesst den Lichtsensor aus und gibt einen Wert zwischen 0-100 zurück
 int getLightValue(void)
@@ -17,6 +20,17 @@ int getLightValue(void)
         value = uBit.display.readLightLevel();
         return (value * 0.3921);      
     }
+
+ //Diese Funktion ist die Callbackfunktion des messageBus.lister welche in der Main definiert ist   
+void lightLevelSend(MicroBitEvent){
+    if(connected == 1) {
+        uart->send(ManagedString("L:"));
+        uart->send(ManagedString(getLightValue()));
+        uart->send(ManagedString("\r\n"));
+        uBit.sleep(20);
+    }
+}
+
 
 //Diese Funktion definiert,dass p3 ein Eingangssignal ist und über die Schleife 
 //werden 100 Samples gemessen, der hoechste Wert wird in der Variablen max gespeichert.
@@ -66,21 +80,25 @@ void onConnected(MicroBitEvent)
         uart->send(ManagedString(selfMicroImpl()));
         uart->send(ManagedString("\r\n"));
         uBit.sleep(20);
-       
+        //msg = msg + ManagedString("M:")+ ManagedString(selfMicroImpl()); 
+        
         uart->send(ManagedString("T:"));
         uart->send(ManagedString(uBit.thermometer.getTemperature()));
         uart->send(ManagedString("\r\n"));
         uBit.sleep(20);
-
+        //msg = msg + ManagedString("T:") + ManagedString(uBit.thermometer.getTemperature());
+        
         uart->send(ManagedString("L:"));
         uart->send(ManagedString(getLightValue()));
         uart->send(ManagedString("\r\n"));
         uBit.sleep(20);
+        //msg = msg + ManagedString("L:") + ManagedString(getLightValue());
 
         uart->send(ManagedString("C:"));
         uart->send(ManagedString(uBit.compass.heading()));
         uart->send(ManagedString("\r\n"));
         uBit.sleep(20);
+        //msg = msg + ManagedString("C:") + ManagedString(uBit.compass.heading());
 
         uart->send(ManagedString("AX:"));
         uart->send(ManagedString(uBit.accelerometer.getX()));
@@ -91,9 +109,16 @@ void onConnected(MicroBitEvent)
         uart->send(ManagedString("AZ:"));
         uart->send(ManagedString(uBit.accelerometer.getZ()));
         uart->send(ManagedString("\r\n"));
-      
+        uBit.sleep(20);
+        //msg = msg + ManagedString("AX:") + ManagedString(uBit.accelerometer.getX()) + ManagedString("AY:") + ManagedString(uBit.accelerometer.getY()) + ManagedString("AZ:") + ManagedString(uBit.accelerometer.getZ());
+        uBit.sleep(20);
+         
+        
+        //uart->send(msg);
         uart->send(ManagedString("\r\n"));
-        uBit.sleep(100);
+        uBit.sleep(1000);
+        //uart-> send(ManagedString(uart->size()));
+        //msg = ManagedString("");
     }
 }
 
@@ -180,6 +205,7 @@ int main()
     //uBit.soundmotor.soundOn(261.626);
 
     uBit.accelerometer.updateSample();
+    uBit.accelerometer.setPeriod(30);
     
     //WHITE
     uBit.rgb.setColour(0xff, 0xff, 0xff, 0xff);
@@ -190,12 +216,16 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, pressedButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, pressedButtonB);
     
+    //uBit.messageBus.listen(MICROBIT_ID_DISPLAY, MICROBIT_DISPLAY_EVT_LIGHT_SENSE, lightLevelSend);
+
     //Start of BluetoothUARTService
     uart = new MicroBitUARTService(*uBit.ble, 32, 32);
     //Start der zusätzlichen Services
     new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
     new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
     new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
+
+    //uBit.display.readLightLevel();
 
     //Falls der Calliope diese Funktion aufruft kann er in den Sleep Modus gehen.    
     release_fiber();
