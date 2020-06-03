@@ -5,8 +5,8 @@ Copyright (c) 2016 British Broadcasting Corporation.
 This software is provided by Lancaster University by arrangement with the BBC.
 
 Modifications Copyright (c) 2016 Calliope GbR
-Modifications are provided by DELTA Systems (Georg Sommer) - Thomas Kern 
-und Björn Eberhardt GbR by arrangement with Calliope GbR. 
+Modifications are provided by DELTA Systems (Georg Sommer) - Thomas Kern
+und Björn Eberhardt GbR by arrangement with Calliope GbR.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -37,12 +37,12 @@ DEALINGS IN THE SOFTWARE.
 #include "MicroBitDevice.h"
 #include "ErrorNo.h"
 #include "MicroBitSystemTimer.h"
-#include "Matrix4.h"
 #include "MicroBitCompat.h"
 #include "MicroBitComponent.h"
 #include "ManagedType.h"
 #include "ManagedString.h"
 #include "MicroBitImage.h"
+#include "MicroBitColor.h"
 #include "MicroBitFont.h"
 #include "MicroBitEvent.h"
 #include "DynamicPwm.h"
@@ -52,9 +52,8 @@ DEALINGS IN THE SOFTWARE.
 #include "MicroBitButton.h"
 #include "MicroBitPin.h"
 #include "MicroBitCompass.h"
-#include "MicroBitCompass-bmx.h"
 #include "MicroBitCompassCalibrator.h"
-#include "MicroBitAccelerometer-bmx.h"
+#include "MicroBitAccelerometer.h"
 #include "MicroBitThermometer.h"
 #include "MicroBitLightSensor.h"
 #include "MicroBitMultiButton.h"
@@ -98,20 +97,22 @@ class MicroBit
 
     uint8_t                     status;
 
+
+
     public:
-	
+
     // Serial Interface
     MicroBitSerial              serial;
 
 	// Reset Button
 	InterruptIn     		    resetButton;
-	
+
     // Persistent key value store
     MicroBitStorage             storage;
-	
+
     // I2C Interface
     MicroBitI2C                 i2c;
-	
+
     // Device level Message Bus abstraction
     MicroBitMessageBus          messageBus;
 
@@ -120,23 +121,23 @@ class MicroBit
     MicroBitButton              buttonA;
     MicroBitButton              buttonB;
     MicroBitMultiButton         buttonAB;
-    MicroBitAccelerometer       accelerometer;
-    MicroBitCompass             compass;
+    MicroBitAccelerometer       &accelerometer;
+    MicroBitCompass             &compass;
     MicroBitCompassCalibrator   compassCalibrator;
     MicroBitThermometer         thermometer;
-    
+
     //An object of available IO pins on the device
     MicroBitIO                  io;
-	
+
     // Bluetooth related member variables.
 	MicroBitBLEManager		    bleManager;
     MicroBitRadio               radio;
     BLEDevice                   *ble;
-	
+
 	//Calliope MINI specific devices
 	CalliopeRGB 				rgb;
 	CalliopeSoundMotor 			soundmotor;
-	
+
     /**
       * Constructor.
       *
@@ -247,7 +248,7 @@ class MicroBit
       * than the hardware random number generator built int the processor, which takes
       * a long time and uses a lot of energy.
       *
-      * KIDS: You shouldn't use this is the real world to generte cryptographic keys though...
+      * KIDS: You shouldn't use this in the real world to generate cryptographic keys though...
       * have a think why not. :-)
       *
       * @param max the upper range to generate a number for. This number cannot be negative.

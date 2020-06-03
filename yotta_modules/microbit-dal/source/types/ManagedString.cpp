@@ -134,6 +134,42 @@ ManagedString::ManagedString(const int value)
 
 /**
   * Constructor.
+  *
+  * Create a managed string from a given integer.
+  *
+  * @param value The integer from which to create the ManagedString.
+  *
+  * @code
+  * ManagedString s(20);
+  * @endcode
+  */
+ManagedString::ManagedString(const unsigned long value)
+{
+    char str[12];
+
+    ultoa(value, str);
+    initString(str);
+}
+
+/**
+  * Constructor.
+  *
+  * Create a managed string from a given integer.
+  *
+  * @param value The integer from which to create the ManagedString.
+  *
+  * @code
+  * ManagedString s(20);
+  * @endcode
+  */
+ManagedString::ManagedString(const double value){
+	char str[12];
+	dtoa(value, str);
+	initString(str);
+}
+
+/**
+  * Constructor.
   * Create a managed string from a given char.
   *
   * @param value The character from which to create the ManagedString.
@@ -366,6 +402,32 @@ ManagedString& ManagedString::operator = (const ManagedString& s)
 bool ManagedString::operator== (const ManagedString& s)
 {
     return ((length() == s.length()) && (strcmp(toCharArray(),s.toCharArray())==0));
+}
+
+/**
+  * Not Equal operation.
+  *
+  * Called when one ManagedString is tested to be equal to another using the '!=' operator.
+  *
+  * @param s The ManagedString to test ourselves against.
+  *
+  * @return true if this ManagedString is not identical to the one supplied, false otherwise.
+  *
+  * @code
+  * MicroBitDisplay display;
+  * ManagedString s("abcd");
+  * ManagedString p("efgh");
+  *
+  * if(p != s)
+  *     display.scroll("We are different!"); //p is not equal to s - this will be called
+  * else
+  *     display.scroll("We are the same!");
+  *
+  * @endcode
+  */
+bool ManagedString::operator!= (const ManagedString& s)
+{
+    return ((length() != s.length()) && (strcmp(toCharArray(),s.toCharArray())!=0));
 }
 
 /**
