@@ -44,7 +44,7 @@ D:/Calliope_Reset/build/calliope-mini-classic-gcc/ym/microbit/source/CMakeFiles/
 D:/Calliope_Reset/build/calliope-mini-classic-gcc/ym/microbit/source/CMakeFiles/rebuild_cache.dir
 D:/Calliope_Reset/build/calliope-mini-classic-gcc/ym/microbit/source/CMakeFiles/test.dir
 D:/Calliope_Reset/build/calliope-mini-classic-gcc/ym/microbit/source/CMakeFiles/edit_cache.dir
-D:/Calliope_Reset/build/calliope-mini-classic-gcc/source/CMakeFiles/frankfurtuniversityss2020.dir
+D:/Calliope_Reset/build/calliope-mini-classic-gcc/source/CMakeFiles/fh-frankfurt-ss2020.dir
 D:/Calliope_Reset/build/calliope-mini-classic-gcc/source/CMakeFiles/rebuild_cache.dir
 D:/Calliope_Reset/build/calliope-mini-classic-gcc/source/CMakeFiles/test.dir
 D:/Calliope_Reset/build/calliope-mini-classic-gcc/source/CMakeFiles/edit_cache.dir

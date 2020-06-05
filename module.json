@@ -1,10 +1,10 @@
 {
-  "name": "frankfurtuniversityss2020",
+  "name": "fh-frankfurt-ss2020",
   "version": "1.0.0",
-  "description": "Calliope mini Project",
+  "description": "Calliope Projekt",
   "license": "Apache 2.0",
   "dependencies": {
-    "microbit": "OpenRoberta/microbit#v2.1.2"
+    "microbit": "calliope-mini/microbit#v2.0.0-calliope-1.0.5"
   },
   "targetDependencies": {},
   "bin": "./source"

@@ -28,7 +28,11 @@ DEALINGS IN THE SOFTWARE.
 
 #include "ble/BLE.h"
 #include "MicroBitConfig.h"
+#ifdef TARGET_NRF51_CALLIOPE
+#include "MicroBitCompass-bmx.h"
+#else
 #include "MicroBitCompass.h"
+#endif
 #include "EventModel.h"
 
 #define COMPASS_CALIBRATION_STATUS_UNKNOWN 0

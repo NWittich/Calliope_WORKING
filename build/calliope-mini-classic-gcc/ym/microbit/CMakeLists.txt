@@ -74,14 +74,14 @@ include_directories(${GLOBAL_INCLUDE_DIRS})
 
 # Provide versions of all the components we depend on, the corresponding
 # preprocessor definitions are generated in yotta_config.h
-set(YOTTA_MICROBIT_DAL_VERSION_STRING "2.1.2-calliope")
+set(YOTTA_MICROBIT_DAL_VERSION_STRING "2.0.0-calliope-1.0.5")
 set(YOTTA_MICROBIT_DAL_VERSION_MAJOR 2)
-set(YOTTA_MICROBIT_DAL_VERSION_MINOR 1)
-set(YOTTA_MICROBIT_DAL_VERSION_PATCH 2)
-set(YOTTA_MICROBIT_VERSION_STRING "2.1.2")
+set(YOTTA_MICROBIT_DAL_VERSION_MINOR 0)
+set(YOTTA_MICROBIT_DAL_VERSION_PATCH 0)
+set(YOTTA_MICROBIT_VERSION_STRING "2.0.0-calliope-1.0.5")
 set(YOTTA_MICROBIT_VERSION_MAJOR 2)
-set(YOTTA_MICROBIT_VERSION_MINOR 1)
-set(YOTTA_MICROBIT_VERSION_PATCH 2)
+set(YOTTA_MICROBIT_VERSION_MINOR 0)
+set(YOTTA_MICROBIT_VERSION_PATCH 0)
 
 # provide the name of the current module so that it's available to custom CMake
 # even if custom CMake does weird things with project()

@@ -6,7 +6,7 @@
 # It is included in the main 'build.ninja'.
 
 # =============================================================================
-# Project: frankfurtuniversityss2020
+# Project: fh-frankfurt-ss2020
 # Configurations: RelWithDebInfo
 # =============================================================================
 # =============================================================================
@@ -176,7 +176,7 @@ rule CXX_STATIC_LIBRARY_LINKER__microbit_RelWithDebInfo
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__frankfurtuniversityss2020_RelWithDebInfo
+rule CXX_COMPILER__fh-frankfurt-ss2020_RelWithDebInfo
   depfile = $DEP_FILE
   deps = gcc
   command = C:\PROGRA~2\GNUTOO~1\92019-~1\bin\AR10B2~1.EXE $DEFINES $INCLUDES $FLAGS -MMD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -186,7 +186,7 @@ rule CXX_COMPILER__frankfurtuniversityss2020_RelWithDebInfo
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__frankfurtuniversityss2020_RelWithDebInfo
+rule CXX_EXECUTABLE_LINKER__fh-frankfurt-ss2020_RelWithDebInfo
   command = cmd.exe /C "$PRE_LINK && C:\PROGRA~2\GNUTOO~1\92019-~1\bin\AR10B2~1.EXE  $LINK_FLAGS -Wl,-Map,$TARGET_FILE.map -Wl,--start-group $in $LINK_PATH $LINK_LIBRARIES  -lstdc++ -lsupc++ -lm -lc -lgcc -lstdc++ -lsupc++ -lm -lc -lgcc -Wl,--end-group  --specs=nano.specs -o $TARGET_FILE && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT

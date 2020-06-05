@@ -5,23 +5,23 @@ cmake_minimum_required(VERSION 2.8.11)
 include_directories("D:/Calliope_Reset/source")
 
 
-set(YOTTA_AUTO_FRANKFURTUNIVERSITYSS2020_CPP_FILES
+set(YOTTA_AUTO_FH-FRANKFURT-SS2020_CPP_FILES
     "D:/Calliope_Reset/source/Main.cpp"
 )
 # force dependency on the config header for cpp files, which CMake otherwise wouldn't track:
-set_property(SOURCE ${YOTTA_AUTO_FRANKFURTUNIVERSITYSS2020_CPP_FILES} PROPERTY OBJECT_DEPENDS "D:/Calliope_Reset/build/calliope-mini-classic-gcc/yotta_config.h")
+set_property(SOURCE ${YOTTA_AUTO_FH-FRANKFURT-SS2020_CPP_FILES} PROPERTY OBJECT_DEPENDS "D:/Calliope_Reset/build/calliope-mini-classic-gcc/yotta_config.h")
 
 
-add_executable (frankfurtuniversityss2020
-    ${YOTTA_AUTO_FRANKFURTUNIVERSITYSS2020_CPP_FILES}
+add_executable (fh-frankfurt-ss2020
+    ${YOTTA_AUTO_FH-FRANKFURT-SS2020_CPP_FILES}
 )
-set_target_properties(frankfurtuniversityss2020 PROPERTIES ENABLE_EXPORTS ON)
+set_target_properties(fh-frankfurt-ss2020 PROPERTIES ENABLE_EXPORTS ON)
 
-yotta_postprocess_target(EXECUTABLE frankfurtuniversityss2020)
+yotta_postprocess_target(EXECUTABLE fh-frankfurt-ss2020)
 
 
 
-target_link_libraries(frankfurtuniversityss2020
+target_link_libraries(fh-frankfurt-ss2020
     microbit
 )
 

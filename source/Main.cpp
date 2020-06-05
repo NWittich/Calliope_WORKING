@@ -4,11 +4,15 @@
 //Deklaration von Variablen
 MicroBit uBit;
 MicroBitUARTService *uart;
+enum menue { Temperatur, Licht, Magnet, Beschleunigung, Lage, Mikrophone};
+static int mein = 0;
 
 //Prototype von Funktionen
 int getLightValue(void);
 int selfMicroImpl(void);
-static int connected = 0;
+ManagedString msg = "";
+
+static bool connected = false;
 
 //Diese Funktion liesst den Lichtsensor aus und gibt einen Wert zwischen 0-100 zurück
 int getLightValue(void)
@@ -53,61 +57,82 @@ int selfMicroImpl(void){
     
 }
 
+//Hier werden die aktuellen G Krafte die auf den Calliope wirken berechnet.
+int getgStrength()
+{
+  double x = uBit.accelerometer.getX();
+  double y = uBit.accelerometer.getY();
+  double z = uBit.accelerometer.getZ();
+
+  return (int) sqrt(x*x + y*y + z*z);
+}
+
 //Sobald ein Geraet mit dem Calliope verbunden ist, wird diese Funktion aufgerufen (siehe main) --> messageBus.listen 
 // Hier werden Mikro, Temperatur, Licht, Kompass-und Beschleunigungssensor ausgelesen und über Bluetooth verschickt
 void onConnected(MicroBitEvent)
 {
     uBit.display.scroll("C");
     uBit.rgb.setColour(0x00, 0x33, 0x33, 0xff);
-    connected = 1;
+    connected = true;
+    mein ++;
     
-    while(connected == 1) {
+    while(connected) {
         
-        uart->send(ManagedString("M:"));
-        uart->send(ManagedString(selfMicroImpl()));
-        uart->send(ManagedString("\r\n"));
-        uBit.sleep(20);
+        uart->send(ManagedString("M:")+ ManagedString(selfMicroImpl())+ ManagedString("\r\n") );
+        //uart->send(ManagedString("M:"));
+        //uart->send(ManagedString(selfMicroImpl()));
+        //uart->send(ManagedString("\r\n"));
        
-        uart->send(ManagedString("T:"));
-        uart->send(ManagedString(uBit.thermometer.getTemperature()));
-        uart->send(ManagedString("\r\n"));
-        uBit.sleep(20);
+       uart->send(ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature()) + ManagedString("\r\n"));
+        //uart->send(ManagedString("T:"));
+        //uart->send(ManagedString(uBit.thermometer.getTemperature()));
+        //uart->send(ManagedString("\r\n"));
         
-        uart->send(ManagedString("L:"));
-        uart->send(ManagedString(getLightValue()));
-        uart->send(ManagedString("\r\n"));
-        uBit.sleep(20);
-
+        uart->send(ManagedString("L:")+ ManagedString(getLightValue()) + ManagedString("\r\n"));
+        //uart->send(ManagedString("L:"));
+        //uart->send(ManagedString(getLightValue()));
+        //uart->send(ManagedString("\r\n"));
         
-        uart->send(ManagedString("C:"));
-        uart->send(ManagedString(uBit.compass.heading()));
-        uart->send(ManagedString("\r\n"));
-        uBit.sleep(20);
+        uart->send(ManagedString("C:")+ ManagedString(uBit.compass.heading())+ ManagedString("\r\n") );
+        //uart->send(ManagedString("C:"));
+        //uart->send(ManagedString(uBit.compass.heading()));
+        //uart->send(ManagedString("\r\n"));
 
-        uart->send(ManagedString("AX:"));
-        uart->send(ManagedString(uBit.accelerometer.getX()));
-        uart->send(ManagedString("\r\n"));
-        uart->send(ManagedString("AY:"));
-        uart->send(ManagedString(uBit.accelerometer.getY()));
-        uart->send(ManagedString("\r\n"));
-        uart->send(ManagedString("AZ:"));
-        uart->send(ManagedString(uBit.accelerometer.getZ()));
-        uart->send(ManagedString("\r\n"));
+        uart->send(ManagedString("AX:") +  ManagedString(uBit.accelerometer.getX()) + ManagedString("\r\n") );
+        ///uart->send(ManagedString("AX:"));
+        //uart->send(ManagedString(uBit.accelerometer.getX()));
+        //uart->send(ManagedString("\r\n"));
+        uart->send(ManagedString("AY:") +  ManagedString(uBit.accelerometer.getY()) + ManagedString("\r\n") );
+        //uart->send(ManagedString("AY:"));
+        //uart->send(ManagedString(uBit.accelerometer.getY()));
+        //uart->send(ManagedString("\r\n"));
+        uart->send(ManagedString("AZ:") +  ManagedString(uBit.accelerometer.getZ()) + ManagedString("\r\n") );
+        //uart->send(ManagedString("AZ:"));
+        //uart->send(ManagedString(uBit.accelerometer.getZ()));
+        //uart->send(ManagedString("\r\n"));
+        uart->send(ManagedString("AS:") +  ManagedString(getgStrength()) + ManagedString("\r\n") );
+        //uart->send(ManagedString("AS:"));
+        //uart->send(ManagedString(getgStrength()));
+        //uart->send(ManagedString("\r\n"));
+
+        uart->send(ManagedString("LA:") + ManagedString(uBit.accelerometer.getGesture()) + ManagedString("\r\n") );
+        //uart->send(ManagedString("LA:"));
+        //uart->send(ManagedString(uBit.accelerometer.getGesture()));
+        //uart->send(ManagedString("\r\n"));
       
-        uart->send(ManagedString("\r\n"));
+        msg = uart->read(1,ASYNC);
+        uBit.display.scroll(msg);
         
-        uBit.sleep(100);
+        uBit.sleep(20);
     }
 }
 
 // Falls die Verbindung getrennt wird erscheint ein "D" auf dem Calliope --> messageBus.listen
 void onDisconnected(MicroBitEvent)
 {
-    connected = 0;
+    connected = false;
     uBit.rgb.setColour(0xff, 0x66, 0x66, 0xff);
     uBit.display.print("D");
-    uBit.soundmotor.soundOn(261.626);
-    //uBit.sleep(50);  
     uBit.reset();  
 }
 
@@ -117,7 +142,7 @@ void pressedButtonA(MicroBitEvent)
 {
     uBit.display.print("A");
     
-    if(connected == 1) {
+    if(connected) {
         //GREEN
         uBit.rgb.setColour(0x00, 0x66, 0x00, 0xff);
         // Receive until end of message signed by :
@@ -165,6 +190,14 @@ void pressedButtonB(MicroBitEvent)
         uBit.display.image.clear();
 }
 
+void pressedButtonAB(MicroBitEvent){
+    //uBit.messageBus.ignore(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
+    //connected = false;
+    uBit.rgb.setColour(0x00, 0x88, 0xff, 0xff);
+    uBit.display.scroll("Choose");
+    uBit.sleep(100);
+    connected = true;   
+}
 
 
 
@@ -185,9 +218,11 @@ int main()
     */
     //uBit.soundmotor.soundOn(261.626);
 
-    //uBit.accelerometer.updateSample();
-    //uBit.accelerometer.setPeriod(20);
-    
+    //Compass jedesmal neu kalibrieren
+    //uBit.compass.calibrate();
+    //Compass einmalig kalibrieren
+    uBit.compass.heading();
+
     //WHITE
     uBit.rgb.setColour(0xff, 0xff, 0xff, 0xff);
     //In diesen Zeilen sind die MessageBus Listener definiert. 
@@ -195,6 +230,7 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, pressedButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, pressedButtonB);
+    uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, pressedButtonAB);
     
     //Start of BluetoothUARTService
     uart = new MicroBitUARTService(*uBit.ble, 32, 32);
@@ -205,7 +241,6 @@ int main()
 
     //AccelerometerService deaktiviert da in Kombination mit UART einfriert.
     //new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
-
 
     //Falls der Calliope diese Funktion aufruft kann er in den Sleep Modus gehen.    
     release_fiber();
