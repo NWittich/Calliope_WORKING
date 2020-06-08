@@ -120,10 +120,13 @@ void onConnected(MicroBitEvent)
         //uart->send(ManagedString(uBit.accelerometer.getGesture()));
         //uart->send(ManagedString("\r\n"));
       
-        msg = uart->read(1,ASYNC);
-        uBit.display.scroll(msg);
+        uart->send(ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed())+ ManagedString("\r\n") +  ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed())+ ManagedString("\r\n") );
         
-        uBit.sleep(20);
+        //Diese Funktion ist nur für den Empfang von einem Zeichen
+        //msg = uart->read(1,ASYNC);
+        //uBit.display.scroll(msg);
+        
+        uBit.sleep(10);
     }
 }
 
@@ -133,6 +136,7 @@ void onDisconnected(MicroBitEvent)
     connected = false;
     uBit.rgb.setColour(0xff, 0x66, 0x66, 0xff);
     uBit.display.print("D");
+    uBit.sleep(5000);
     uBit.reset();  
 }
 
@@ -228,9 +232,11 @@ int main()
     //In diesen Zeilen sind die MessageBus Listener definiert. 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
-    uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, pressedButtonA);
-    uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, pressedButtonB);
-    uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, pressedButtonAB);
+    
+    //Wird nicht benötigt 
+    //uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, pressedButtonA);
+    //uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, pressedButtonB);
+    //uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, pressedButtonAB);
     
     //Start of BluetoothUARTService
     uart = new MicroBitUARTService(*uBit.ble, 32, 32);
