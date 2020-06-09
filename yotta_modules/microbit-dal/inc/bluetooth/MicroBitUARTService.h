@@ -32,7 +32,7 @@ DEALINGS IN THE SOFTWARE.
 #include "MicroBitConfig.h"
 #include "MicroBitSerial.h"
 
-#define MICROBIT_UART_S_DEFAULT_BUF_SIZE    20
+#define MICROBIT_UART_S_DEFAULT_BUF_SIZE    40
 
 #define MICROBIT_UART_S_EVT_DELIM_MATCH     1
 #define MICROBIT_UART_S_EVT_HEAD_MATCH      2

@@ -4,8 +4,6 @@
 //Deklaration von Variablen
 MicroBit uBit;
 MicroBitUARTService *uart;
-enum menue { Temperatur, Licht, Magnet, Beschleunigung, Lage, Mikrophone};
-static int mein = 0;
 
 //Prototype von Funktionen
 int getLightValue(void);
@@ -74,10 +72,9 @@ void onConnected(MicroBitEvent)
     uBit.display.scroll("C");
     uBit.rgb.setColour(0x00, 0x33, 0x33, 0xff);
     connected = true;
-    mein ++;
-    
+
     while(connected) {
-        
+        /*
         uart->send(ManagedString("M:")+ ManagedString(selfMicroImpl())+ ManagedString("\r\n") );
         //uart->send(ManagedString("M:"));
         //uart->send(ManagedString(selfMicroImpl()));
@@ -121,12 +118,36 @@ void onConnected(MicroBitEvent)
         //uart->send(ManagedString("\r\n"));
       
         uart->send(ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed())+ ManagedString("\r\n") +  ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed())+ ManagedString("\r\n") );
+        */
+
         
+        uart->send(
+        ManagedString("M:")+ ManagedString(selfMicroImpl()) +
+        ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature()) + 
+        ManagedString("L:")+ ManagedString(getLightValue()) + 
+        ManagedString("C:")+ ManagedString(uBit.compass.heading()) , 
+        SYNC_SLEEP );
+        uBit.sleep(20);
+
+        uart->send( 
+        ManagedString("AX:") +  ManagedString(uBit.accelerometer.getX()) +
+        ManagedString("AY:") +  ManagedString(uBit.accelerometer.getY()) + 
+        ManagedString("AZ:") +  ManagedString(uBit.accelerometer.getZ()) , 
+        SYNC_SLEEP );
+        uBit.sleep(20);
+
+        uart->send( 
+        ManagedString("AS:") +  ManagedString(getgStrength()) + 
+        ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed()) +  
+        ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed()) +
+        ManagedString("\r\n") ,
+        SYNC_SLEEP );
+
         //Diese Funktion ist nur für den Empfang von einem Zeichen
         //msg = uart->read(1,ASYNC);
         //uBit.display.scroll(msg);
         
-        uBit.sleep(10);
+        uBit.sleep(20);
     }
 }
 
@@ -228,7 +249,7 @@ int main()
     uBit.compass.heading();
 
     //WHITE
-    uBit.rgb.setColour(0xff, 0xff, 0xff, 0xff);
+    uBit.rgb.setColour(0xff, 0xff, 0xff, 0x0a);
     //In diesen Zeilen sind die MessageBus Listener definiert. 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
