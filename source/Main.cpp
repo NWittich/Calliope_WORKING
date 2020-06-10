@@ -11,13 +11,20 @@ int selfMicroImpl(void);
 ManagedString msg = "";
 
 static bool connected = false;
+int oldLightValue = 0;
 
 //Diese Funktion liesst den Lichtsensor aus und gibt einen Wert zwischen 0-100 zurück
 int getLightValue(void)
     {
         int value = 0;
-        value = uBit.display.readLightLevel();
-        return (value * 0.3921);      
+            value = uBit.display.readLightLevel();
+            if (value == 0){
+                value = oldLightValue;
+            } 
+            else {
+                oldLightValue = value;
+            }  
+        return round((value * 0.3921));      
     }
 
 //Diese Funktion definiert,dass p3 ein Eingangssignal ist und über die Schleife 
@@ -147,7 +154,7 @@ void onConnected(MicroBitEvent)
         //msg = uart->read(1,ASYNC);
         //uBit.display.scroll(msg);
         
-        uBit.sleep(20);
+        uBit.sleep(50);
     }
 }
 
