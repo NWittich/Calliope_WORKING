@@ -269,9 +269,9 @@ int main()
     //Start of BluetoothUARTService
     uart = new MicroBitUARTService(*uBit.ble, 32, 32);
 
-    //Start der zusätzlichen Services
-    new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
-    new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
+    //Start der zusätzlichen Services werden nicht benötigt, da alls ueber UART gesendet wird
+    //new MicroBitTemperatureService(*uBit.ble, uBit.thermometer);
+    //new MicroBitMagnetometerService(*uBit.ble, uBit.compass);
 
     //AccelerometerService deaktiviert da in Kombination mit UART einfriert.
     //new MicroBitAccelerometerService(*uBit.ble, uBit.accelerometer);
