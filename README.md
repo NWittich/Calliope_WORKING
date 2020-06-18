@@ -10,14 +10,18 @@ Installationsanleitung auf Calliope
 1. Firmware auf Calliope flashen
    1. Calliope per USB an den PC anschließen
    1. Hex Datei welche unter build/calliope-mini-classic-gcc/source/fh-frankfurt-ss2020-combined.hex zu finden ist auf den Calliope kopieren
-   1. Nach erfolgreichem flashen des Calliope ereleuchtet die weiße LED
+   1. Nach erfolgreichem flashen des Calliope leuchtet eine weiße LED
 1. Smartphone mit Calliope koppeln
    1. Calliope starten
    1. Button A und Button B drücken
    1. Reset Button kurz antippen
-   1. Sobald Bluetooth Symbol auf dem Bildschirm des Calliope erscheint, Button A und Button B loslassen
+   1. Sobald das Bluetooth Symbol auf dem Bildschirm des Calliope erscheint, Button A und Button B loslassen
    1. Calliope auf dem Smartphone Bluetooth Manager auswählen
-   1. Zahlencode der auf dem Calliope erscheint notieren und bei der Verbindungsanfrage auf dem Smartphone eingeben
+   1. Zahlencode (PIN) der auf dem Calliope erscheint notieren und bei der Verbindungsanfrage auf dem Smartphone eingeben
+   1. Mit folgender App können die Daten auf dem Smartphone angezeigt werden --> https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal
+   
+   
+   
    
  
 
