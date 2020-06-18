@@ -49,7 +49,17 @@ Kodiert sind die Sensorwerte wie folgt:
 1. Installtion von CMAKE (Yotta nutzt CMake für den Buildprozess) [LINK](http://www.cmake.org/download/)
       * Wichtig während der Installation die Option “add to path” auswählen um die Umgebungsvariable zu setzen.
 1. Installation von Ninja 1.10 [LINK](https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-win.zip)
-      * Die 
+      * Die ninja.exe unter C:\ninja speichern und unter PATH in der Umgebungsvariablen angeben.
+1. Installation von GNU Arm Embedded Toolchain [LINK](https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-win32.exe?revision=50c95fb2-67ca-4df7-929b-55396266b4a1&la=en&hash=DE1CD6E7A15046FD1ADAF828EA4FA82228E682E2)
+1. Yotta installieren über Powershell `pip install -U yotta`
+1. Installation von SRecord [LINK](http://srecord.sourceforge.net/)
+      * SRecord unter C:\srecord speichern und unter PATH in der Umgebungsvariablen angeben. 
+1. Installation von Visual Studio Code [LINK](https://code.visualstudio.com/)
+1. Repositorium herunterladen und Daten in einem seperaten Ordner entpacken. Anschließend diesen mit VSC öffnen.
+1. Terminal in VSC öffnen und target compiler definieren `yt target calliope-mini-classic-gcc`
+1. Über den Befehl `yt clean` und `yt build` wird die Firmware gebaut und unter build/calliope-mini-classic-gcc/source/fh-frankfurt-ss2020-combined.hex gespeichert.
+
+
 
    
    
