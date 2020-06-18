@@ -5,8 +5,9 @@ Nach erolgreicher Kopplung mit dem Calliope fängt dieser an, die Sensorwerte zu
 Kodiert sind die Sensorwerte wie folgt:
 M: Mikrophonelautstärke (Bereich 0-100), T: Temperatur (° C) , L: Lichtintensität (Bereich 0-100) , C: Grad (360° = Nord, 90° = Ost, 180° = Süd , 270° = West), AX: Beschleunigung auf der x-Achse (in millig (Gravitation)) , AY: Beschleunigung auf der y-Achse (in millig), AZ: Beschleunigung auf der z-Achse (in millig), AS: aktuell Wirkende Gravitation auf dem Calliope, BA: Button A betätigt (0 falsch, 1 wahr) , BB: Button B betätigt (0 falsch, 1 wahr)
 
-   
-Installationsanleitung auf Calliope
+## How to use
+
+###### Installationsanleitung auf Calliope & Smartphone
 1. Firmware auf Calliope flashen
    1. Calliope per USB an den PC anschließen
    1. Hex Datei welche unter build/calliope-mini-classic-gcc/source/fh-frankfurt-ss2020-combined.hex zu finden ist auf den Calliope kopieren
