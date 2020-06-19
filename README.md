@@ -5,12 +5,12 @@ Nach erolgreicher Kopplung mit dem Calliope fängt dieser an, die Sensorwerte zu
 Kodiert sind die Sensorwerte wie folgt:
 * M: Mikrophonelautstärke (Bereich 0-100), 
 * T: Temperatur (° C) , 
-* L: Lichtintensität (Bereich 0-100) , 
-* C: Grad (360° = Nord, 90° = Ost, 180° = Süd , 270° = West), 
+* L: Lichtintensität (Bereich 0-100 , dunkel -> hell) , 
+* C: Grad (Bereich 0 - 360 , (360° = Nord, 90° = Ost, 180° = Süd , 270° = West)), 
 * AX: Beschleunigung auf der x-Achse (in millig (Gravitation)) , 
 * AY: Beschleunigung auf der y-Achse (in millig), 
 * AZ: Beschleunigung auf der z-Achse (in millig), 
-* AS: aktuell Wirkende Gravitation auf dem Calliope, 
+* AS: aktuell wirkende Gravitation auf dem Calliope, 
 * BA: Button A betätigt (0 falsch, 1 wahr) , 
 * BB: Button B betätigt (0 falsch, 1 wahr)
 
@@ -58,6 +58,7 @@ Kodiert sind die Sensorwerte wie folgt:
 1. Repositorium herunterladen und Daten in einem seperaten Ordner entpacken. Anschließend diesen mit VSC öffnen.
 1. Terminal in VSC öffnen und target compiler definieren `yt target calliope-mini-classic-gcc`
 1. Über den Befehl `yt clean` und `yt build` wird die Firmware gebaut und unter build/calliope-mini-classic-gcc/source/fh-frankfurt-ss2020-combined.hex gespeichert.
+1. **Wichtig kein `yt update` durchführen ansonsten muss MicroBitConfig.h & MicroBitUARTService.h angepasst werden**
 
 
 
