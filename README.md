@@ -58,7 +58,7 @@ Kodiert sind die Sensorwerte wie folgt:
 1. Repositorium herunterladen und Daten in einem seperaten Ordner entpacken. Anschließend diesen mit VSC öffnen.
 1. Terminal in VSC öffnen und target compiler definieren `yt target calliope-mini-classic-gcc`
 1. Über den Befehl `yt clean` und `yt build` wird die Firmware gebaut und unter build/calliope-mini-classic-gcc/source/fh-frankfurt-ss2020-combined.hex gespeichert.
-1. **Wichtig kein `yt update` durchführen ansonsten muss MicroBitConfig.h & MicroBitUARTService.h angepasst werden**
+* **Wichtig kein `yt update` durchführen ansonsten muss MicroBitConfig.h & MicroBitUARTService.h angepasst werden**
 
 
 
