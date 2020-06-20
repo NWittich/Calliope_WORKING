@@ -34,6 +34,8 @@ Kodiert sind die Sensorwerte wie folgt:
    ## Hardware
    
    <img src="https://github.com/calliope-mini/calliope-demo/blob/master/calliope-mini-v1.0.png" width="350"/>
+   
+   Version 1.3
  
    
    ## Entwicklungsumgebung
