@@ -1,6 +1,6 @@
 # Calliope_WORKING
 Dieses Repositorium beinhaltet den Code um alle Sensorwerte des Calliope V1.3 auszulesen und über Bluetooth LE UART zu versenden. 
-Nach erolgreicher Kopplung mit dem Calliope fängt dieser an, die Sensorwerte zu senden.
+Nach erfolgreicher Kopplung mit dem Calliope fängt dieser an, die Sensorwerte zu senden.
 
 Kodiert sind die Sensorwerte wie folgt:
 * M: Mikrophonelautstärke (Bereich 0-100), 
