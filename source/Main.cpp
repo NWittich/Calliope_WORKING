@@ -4,6 +4,7 @@
 //Deklaration von Variablen
 MicroBit uBit;
 MicroBitUARTService *uart;
+int lightValue[2];
 
 //Prototype von Funktionen
 int getLightValue(void);
@@ -16,7 +17,7 @@ int oldLightValue = 0;
 //Diese Funktion liesst den Lichtsensor aus und gibt einen Wert zwischen 0-100 zurück
 int getLightValue(void)
     {
-        int value = 0;
+        /*int value = 0;
             value = uBit.display.readLightLevel();
             if (value == 0){
                 value = oldLightValue;
@@ -24,7 +25,19 @@ int getLightValue(void)
             else {
                 oldLightValue = value;
             }  
-        return round((value * 0.3921));      
+        return round((value * 0.3921));
+        */
+        for (int i=0; i<2; i++){
+            lightValue[i]= uBit.display.readLightLevel();
+        }  
+
+        if (lightValue[0] > lightValue[1]){
+            return round(lightValue[0]* 0.3921);
+        } 
+        if (lightValue[0] <= lightValue[1]){
+            return round(lightValue[1]* 0.3921);
+        }  
+
     }
 
 //Diese Funktion definiert,dass p3 ein Eingangssignal ist und über die Schleife 
@@ -32,7 +45,7 @@ int getLightValue(void)
 //Der Rückgabewert ist ein Int zwischen 0-100
 int selfMicroImpl(void){
     AnalogIn microin(p3);
-
+    //uBit.io.P21.getAnalogValue();
     int max = 0;
     int value = 0;
 
@@ -129,6 +142,7 @@ int main()
 {
     //Initialisierung der UBit Umgebung
     uBit.init();
+
         
     /*
     //GREEN
