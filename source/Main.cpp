@@ -29,12 +29,13 @@ int getLightValue(void)
         */
         for (int i=0; i<2; i++){
             lightValue[i]= uBit.display.readLightLevel();
+            uBit.sleep(10);
         }  
 
         if (lightValue[0] > lightValue[1]){
             return round(lightValue[0]* 0.3921);
         } 
-        if (lightValue[0] <= lightValue[1]){
+        else {
             return round(lightValue[1]* 0.3921);
         }  
 
@@ -45,7 +46,6 @@ int getLightValue(void)
 //Der Rückgabewert ist ein Int zwischen 0-100
 int selfMicroImpl(void){
     AnalogIn microin(p3);
-    //uBit.io.P21.getAnalogValue();
     int max = 0;
     int value = 0;
 
@@ -91,7 +91,6 @@ void onConnected(MicroBitEvent)
 {
     uBit.display.scrollAsync("C");
     uBit.rgb.off();
-    //uBit.rgb.setColour(0x00, 0x33, 0x33, 0xff);
     connected = true;
 
     while(connected) {
@@ -118,7 +117,7 @@ void onConnected(MicroBitEvent)
         ManagedString("\r\n") ,
         SYNC_SLEEP );
 
-        //Diese Funktion ist nur für den Empfang von einem Zeichen
+        //Diese Funktion ist für den Empfang von einem Zeichen
         //msg = uart->read(1,ASYNC);
         //uBit.display.scroll(msg);
         
@@ -143,17 +142,6 @@ int main()
     //Initialisierung der UBit Umgebung
     uBit.init();
 
-        
-    /*
-    //GREEN
-    uBit.rgb.setColour(0x00, 0x66, 0x00, 0xff);
-    //RED
-    uBit.rgb.setColour(0xff, 0x00, 0x00, 0x00);
-    //WHITE
-    uBit.rgb.setColour(0xff, 0xff, 0xff, 0xff);
-    //LED OFF
-    uBit.rgb.off();
-    */
 
     //Compass jedesmal neu kalibrieren
     //uBit.compass.calibrate();
