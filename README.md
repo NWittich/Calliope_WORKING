@@ -82,7 +82,7 @@ Kodiert sind die Sensorwerte wie folgt:
 1. Installation von Docker gemäß offizieller Docker Installationsanleitung
 1. Im Calliope_WORKING Repositorium muss zunächst das /build/ Verzeichnis geleert werden.
 1. Ausführen von `docker run -v "/absoluter/Pfad/Calliope_WORKING/:/build/" boonto/yotta:1`. 
-   Das Docker Image ist zu finden unter [LINK] (https://hub.docker.com/r/boonto/yotta).
+   Das Docker Image ist zu finden unter [LINK](https://hub.docker.com/r/boonto/yotta/) 
 1. Die erzeugte firmware befindet sich im Verzeichnis /Calliope_WORKING/build/calliope-mini-classic-gcc/source/ und trägt die Bezeichnung fh-frankfurt-ss2020-combined.hex
  
 
