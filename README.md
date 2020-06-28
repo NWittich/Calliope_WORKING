@@ -63,8 +63,26 @@ Kodiert sind die Sensorwerte wie folgt:
 * **Wichtig kein `yt update` durchführen ansonsten muss MicroBitConfig.h & MicroBitUARTService.h angepasst werden**
 
 
+##### Linux (Script)
 
+1. Repositorium der Calliope Projektgruppe herunterladen.
+1. Innerhalb des Calliope_WORKING Repositoriums den Ordner "target" anlegen. `mkdir target`
+1. Repositorium der OpenRoberta Lab Crosscompiler Resources herunterladen. [LINK](https://github.com/OpenRoberta/ora-cc-rsc)
+1. Via Compile Script,welches sich im RobotMbed Ordner befindet, wird das Projekt zusammen mit vorkompilierten statischen Bibliotheken kompiliert.
+`./compile.sh /usr/bin/ Main ./Calliope_WORKING/ ./RobotMbed/libs2017/ -b`
+* **Wichtig: auf Grund der statischen Bibliotheken ist keine Anpassung der MicroBitConfig.h bzw. MicroBitUARTService.h möglich, ohne diese selbständig neu zu kompilieren. Dies führt je nach Umfang des Projektcodes zu Instabilität der Firmware.
    
-   
+##### Linux (yotta)
+
+1. Installation von python, cmake, ninja, arm embedded toolchain, yotta (siehe Windows)
+1. Der Kompilierprozess per yotta scheitert mit der Fehlermeldung: `Region RAM overflowed with stack`
+   Dies scheint auf die Bibliotheken zurückzuführen, welche der ARM Compiler während des Linking Vorganges verwendet.
+
+##### Linux (docker)
+1. Installation von Docker gemäß offizieller Docker Installationsanleitung
+1. Im Calliope_WORKING Repositorium muss zunächst das /build/ Verzeichnis geleert werden.
+1. Ausführen von `docker run -v "/absoluter/Pfad/Calliope_WORKING/:/build/" boonto/yotta:1`. 
+   Das Docker Image ist zu finden unter [LINK] (https://hub.docker.com/r/boonto/yotta).
+1. Die erzeugte firmware befindet sich im Verzeichnis /Calliope_WORKING/build/calliope-mini-classic-gcc/source/ und trägt die Bezeichnung fh-frankfurt-ss2020-combined.hex
  
 
