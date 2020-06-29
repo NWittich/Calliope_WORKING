@@ -4,7 +4,7 @@
 //Deklaration von Variablen
 MicroBit uBit;
 MicroBitUARTService *uart;
-int lightValue[2];
+
 
 //Prototype von Funktionen
 int getLightValue(void);
@@ -27,17 +27,15 @@ int getLightValue(void)
             }  
         return round((value * 0.3921));
         */
-        for (int i=0; i<2; i++){
-            lightValue[i]= uBit.display.readLightLevel();
+        int value= 0;
+       
+        for (int i=0; i<5; i++){
+            value += uBit.display.readLightLevel();
             uBit.sleep(10);
         }  
+        value = round (value/5);
 
-        if (lightValue[0] > lightValue[1]){
-            return round(lightValue[0]* 0.3921);
-        } 
-        else {
-            return round(lightValue[1]* 0.3921);
-        }  
+        return round((value * 0.3921));
 
     }
 
