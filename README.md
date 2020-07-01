@@ -43,7 +43,7 @@ Kodiert sind die Sensorwerte wie folgt:
 | Umgebung | Betriebssystem |
 | ------------- |-------------|
 | Visual Studio Code | Windows |
-| Script  | Linux |
+| Script, Yotta, Docker  | Linux |
    
 ###### Windows
 1. Installation von python [LINK](https://www.python.org/downloads/)
@@ -85,4 +85,46 @@ Kodiert sind die Sensorwerte wie folgt:
    Das Docker Image ist zu finden unter [LINK](https://hub.docker.com/r/boonto/yotta/) 
 1. Die erzeugte firmware befindet sich im Verzeichnis /Calliope_WORKING/build/calliope-mini-classic-gcc/source/ und trägt die Bezeichnung fh-frankfurt-ss2020-combined.hex
  
-
+ ## Parametrisierung
+ Micro:bit DAL beinhaltet eine Menge an freiparametisierbaren Werten. Die untengenannten Parameter sind speziell für die Firmware angepasst. Eine genaue Aufschlüsselung jedes Parameters ist unter [LINK](https://lancaster-university.github.io/microbit-docs/advanced/#compile-time-options-with-microbitconfigh) zu finden. Zusätzlich muss der UART Buffer [LINK](https://github.com/NWittich/Calliope_WORKING/blob/master/yotta_modules/microbit-dal/inc/bluetooth/MicroBitUARTService.h) '''MICROBIT_UART_S_DEFAULT_BUF_SIZE''' auf 40 erhöht werden.
+ ##### config.json
+```json 
+{
+  "microbit-dal": {
+    "bluetooth": {
+      "enabled": 1,
+      "pairing_mode": 1,
+      "private_addressing": 0,
+      "open": 1,
+      "security_level": null,
+      "whitelist": 0,
+      "advertising_timeout": 0,
+      "tx_power": 7,
+      "dfu_service": 0,
+      "event_service": 0,
+      "device_info_service": 1
+    },
+    "gatt_table_size": "0x700",
+    "debug": 0,
+    "heap_debug": 0,
+    "reuse_sd": 0,
+    "default_pullmode": "PullDown",
+    "heap_allocator": 0,
+    "nested_heap_proportion": 0.5,
+    "system_tick_period": 6,
+    "system_components": 10,
+    "idle_components": 6,
+    "use_accel_lsb": 0,
+    "min_display_brightness": 1,
+    "max_display_brightness": 255,
+    "display_scroll_speed": 120,
+    "display_scroll_stride": -1,
+    "display_print_speed": 400,
+    "panic_on_heap_full": 0,
+    "stack_size": 2560,
+    "sram_base": "0x20000008",
+    "sram_end": "0x20004000",
+    "sd_limit": "0x20002000"
+  }
+}
+```
