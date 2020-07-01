@@ -33,9 +33,8 @@ int getLightValue(void)
             value += uBit.display.readLightLevel();
             uBit.sleep(10);
         }  
-        value = round (value/5);
 
-        return round((value * 0.3921));
+        return round(((value/5) * 0.3921));
 
     }
 
