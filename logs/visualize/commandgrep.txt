@@ -1,0 +1,1 @@
+grep -o --color=never 'L:[0-9]*' 04.txt > 04withlight_incorrect.txt
