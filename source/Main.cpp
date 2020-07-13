@@ -7,12 +7,26 @@ MicroBitUARTService *uart;
 
 
 //Prototype von Funktionen
+void startingSound(void);
 int getLightValue(void);
 int selfMicroImpl(void);
 ManagedString msg = "";
 
 static bool connected = false;
 int oldLightValue = 0;
+
+
+//Diese Funktion generiert einen Startsound
+void startingSound(void){
+    uBit.soundmotor.soundOn(260);
+    uBit.sleep(120);
+    uBit.soundmotor.soundOff();
+    uBit.sleep(60);
+    uBit.soundmotor.soundOn(780);
+    uBit.sleep(500);
+    uBit.soundmotor.soundOff();
+    uBit.rgb.off();
+}
 
 //Diese Funktion liesst den Lichtsensor aus und gibt einen Wert zwischen 0-100 zurück
 int getLightValue(void)
@@ -28,8 +42,9 @@ int getLightValue(void)
         return round((value * 0.3921));
         */
         int value= 0;
-       
+       //uBit.display.setDisplayMode(DISPLAY_MODE_BLACK_AND_WHITE_LIGHT_SENSE);
         for (int i=0; i<5; i++){
+            
             value += uBit.display.readLightLevel();
             uBit.sleep(10);
         }  
@@ -92,7 +107,7 @@ void onConnected(MicroBitEvent)
 
     while(connected) {
         
-        uart->send(
+        /*uart->send(
         ManagedString("M:")+ ManagedString(selfMicroImpl()) +
         ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature()) + 
         ManagedString("L:")+ ManagedString(getLightValue()) + 
@@ -113,10 +128,47 @@ void onConnected(MicroBitEvent)
         ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed()) +
         ManagedString("\r\n") ,
         SYNC_SLEEP );
+        */
 
         //Diese Funktion ist für den Empfang von einem Zeichen
         //msg = uart->read(1,ASYNC);
         //uBit.display.scroll(msg);
+
+        ManagedString msg_micro = ManagedString("M:")+ ManagedString(selfMicroImpl());
+        ManagedString msg_temp = ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature());  
+        ManagedString msg_light = ManagedString("L:")+ ManagedString(getLightValue());  
+        ManagedString msg_comp = ManagedString("C:")+ ManagedString(uBit.compass.heading()) ;
+        ManagedString msg_accx = ManagedString("AX:") +  ManagedString(uBit.accelerometer.getX()); 
+        ManagedString msg_accy = ManagedString("AY:") +  ManagedString(uBit.accelerometer.getY()); 
+        ManagedString msg_accz = ManagedString("AZ:") +  ManagedString(uBit.accelerometer.getZ()); 
+        ManagedString msg_accs = ManagedString("AS:") +  ManagedString(getgStrength());  
+        ManagedString msg_buttonA = ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed());  
+        ManagedString msg_buttonB= ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed());
+
+
+        uart->send(
+            msg_micro + 
+            msg_temp + 
+            msg_light + 
+            msg_comp, 
+            SYNC_SLEEP );
+        
+        uBit.sleep(20);
+
+        uart->send(
+            msg_accx +
+            msg_accy + 
+            msg_accz, 
+            SYNC_SLEEP );
+
+        uBit.sleep(20);
+
+        uart->send(
+            msg_accs +
+            msg_buttonA + 
+            msg_buttonB + 
+            ManagedString("\r\n"),
+            SYNC_SLEEP );
         
         uBit.sleep(50);
     }
@@ -139,11 +191,15 @@ int main()
     //Initialisierung der UBit Umgebung
     uBit.init();
 
+        //BLUE
+    uBit.rgb.setColour(0x00, 0x00, 0x00, 0xff);
 
     //Compass jedesmal neu kalibrieren
     //uBit.compass.calibrate();
     //Compass einmalig kalibrieren
     uBit.compass.heading();
+
+    startingSound();
 
     //WHITE
     uBit.rgb.setColour(0xff, 0xff, 0xff, 0x0a);
