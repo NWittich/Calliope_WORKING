@@ -84,10 +84,10 @@ void MicroBitCompassCalibrator::calibrate(MicroBitEvent)
 
     // Firstly, we need to take over the display. Ensure all active animations are paused.
     display.stopAnimation();
-    display.scrollAsync("DRAW A CIRCLE");
+    display.scrollAsync("Zeichne einen Kreis");
 
     for (int i=0; i<110; i++)
-        wait_ms(100);
+        wait_ms(150);
 
     display.stopAnimation();
     display.clear();

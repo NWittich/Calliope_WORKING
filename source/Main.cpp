@@ -4,14 +4,16 @@
 //Deklaration von Variablen
 MicroBit uBit;
 MicroBitUARTService *uart;
+int lightCount = 3;
 
 
 //Prototype von Funktionen
 void startingSound(void);
 int getLightValue(void);
 int selfMicroImpl(void);
-ManagedString msg = "";
 
+ManagedString msg_light = "";
+ManagedString msg = "";
 static bool connected = false;
 int oldLightValue = 0;
 
@@ -106,8 +108,8 @@ void onConnected(MicroBitEvent)
     connected = true;
 
     while(connected) {
-        
-        /*uart->send(
+        /*
+        uart->send(
         ManagedString("M:")+ ManagedString(selfMicroImpl()) +
         ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature()) + 
         ManagedString("L:")+ ManagedString(getLightValue()) + 
@@ -128,23 +130,30 @@ void onConnected(MicroBitEvent)
         ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed()) +
         ManagedString("\r\n") ,
         SYNC_SLEEP );
-        */
+        
 
         //Diese Funktion ist für den Empfang von einem Zeichen
         //msg = uart->read(1,ASYNC);
         //uBit.display.scroll(msg);
 
+        */
+
         ManagedString msg_micro = ManagedString("M:")+ ManagedString(selfMicroImpl());
-        ManagedString msg_temp = ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature());  
-        ManagedString msg_light = ManagedString("L:")+ ManagedString(getLightValue());  
-        ManagedString msg_comp = ManagedString("C:")+ ManagedString(uBit.compass.heading()) ;
+        ManagedString msg_temp = ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature());
+    
+        if (lightCount >= 3){
+            msg_light = ManagedString("L:")+ ManagedString(getLightValue());
+            lightCount = 0; 
+            }
+        lightCount+=1;
+         
+        ManagedString msg_comp = ManagedString("C:")+ ManagedString(uBit.compass.heading());
         ManagedString msg_accx = ManagedString("AX:") +  ManagedString(uBit.accelerometer.getX()); 
         ManagedString msg_accy = ManagedString("AY:") +  ManagedString(uBit.accelerometer.getY()); 
         ManagedString msg_accz = ManagedString("AZ:") +  ManagedString(uBit.accelerometer.getZ()); 
-        ManagedString msg_accs = ManagedString("AS:") +  ManagedString(getgStrength());  
+        ManagedString msg_accs = ManagedString("AS:") +  ManagedString(getgStrength()); 
         ManagedString msg_buttonA = ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed());  
         ManagedString msg_buttonB= ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed());
-
 
         uart->send(
             msg_micro + 
@@ -191,8 +200,6 @@ int main()
     //Initialisierung der UBit Umgebung
     uBit.init();
 
-        //BLUE
-    uBit.rgb.setColour(0x00, 0x00, 0x00, 0xff);
 
     //Compass jedesmal neu kalibrieren
     //uBit.compass.calibrate();
