@@ -19,7 +19,7 @@
     "reuse_sd": 0,
     "default_pullmode": "PullDown",
     "heap_allocator": 0,
-    "nested_heap_proportion": 0.5,
+    "nested_heap_proportion": 0.75,
     "system_tick_period": 6,
     "system_components": 10,
     "idle_components": 6,
