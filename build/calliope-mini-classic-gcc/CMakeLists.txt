@@ -40,14 +40,14 @@ endfunction()
 # set target-defined definitions
 set(YOTTA_BUILD_YEAR "2020") # UTC year
 set(YOTTA_BUILD_MONTH "7") # UTC month 1-12
-set(YOTTA_BUILD_DAY "27") # UTC day 1-31
-set(YOTTA_BUILD_HOUR "9") # UTC hour 0-24
-set(YOTTA_BUILD_MINUTE "32") # UTC minute 0-59
+set(YOTTA_BUILD_DAY "28") # UTC day 1-31
+set(YOTTA_BUILD_HOUR "6") # UTC hour 0-24
+set(YOTTA_BUILD_MINUTE "28") # UTC minute 0-59
 set(YOTTA_BUILD_SECOND "0") # UTC second 0-61
-set(YOTTA_BUILD_UUID "2fad1646-bb5c-431e-9a73-25e701cc315c") # unique random UUID for each build
-set(YOTTA_BUILD_VCS_ID "b'841fbd614e9f3bf4a03e9daace9da0ce6ebed7f7'") # git or mercurial hash
+set(YOTTA_BUILD_UUID "c94d0edf-3360-4c5a-9680-df8f44cf8d9a") # unique random UUID for each build
+set(YOTTA_BUILD_VCS_ID "b'f20266a3656ca4df25e1a108a5499ce0c2753c60'") # git or mercurial hash
 set(YOTTA_BUILD_VCS_CLEAN "0") # evaluates true if the version control system was clean, otherwise false
-set(YOTTA_BUILD_VCS_DESCRIPTION "b'841fbd6'") # git describe or mercurial equivalent
+set(YOTTA_BUILD_VCS_DESCRIPTION "b'f20266a'") # git describe or mercurial equivalent
 set(TARGET CALLIOPE_MINI_CLASSIC_GCC)
 set(TARGET_LIKE_CALLIOPE_MINI_CLASSIC_GCC TRUE)
 set(YOTTA_BUILD_INFO_HEADER "D:/Calliope_Reset/build/calliope-mini-classic-gcc/yotta_build_info.h")

@@ -5,17 +5,30 @@
 MicroBit uBit;
 MicroBitUARTService *uart;
 int lightCount = 3;
+static bool connected = false;
+int oldLightValue = 0;
+ManagedString msg_light = "";
+ManagedString msg = "";
+ManagedString msg_micro = "";
+ManagedString msg_temp = "";         
+ManagedString msg_comp = "";
+ManagedString msg_accx = ""; 
+ManagedString msg_accy = ""; 
+ManagedString msg_accz = ""; 
+ManagedString msg_accs = "";
+ManagedString msg_buttonA = ""; 
+ManagedString msg_buttonB= "";
 
 
 //Prototype von Funktionen
 void startingSound(void);
 int getLightValue(void);
 int selfMicroImpl(void);
+int getgStrength(void);
+int selfTempImpl(void);
 
-ManagedString msg_light = "";
-ManagedString msg = "";
-static bool connected = false;
-int oldLightValue = 0;
+
+
 
 
 //Diese Funktion generiert einen Startsound
@@ -27,28 +40,17 @@ void startingSound(void){
     uBit.soundmotor.soundOn(780);
     uBit.sleep(500);
     uBit.soundmotor.soundOff();
-    uBit.rgb.off();
 }
 
 //Diese Funktion liesst den Lichtsensor aus und gibt einen Wert zwischen 0-100 zurück
 int getLightValue(void)
     {
-        /*int value = 0;
-            value = uBit.display.readLightLevel();
-            if (value == 0){
-                value = oldLightValue;
-            } 
-            else {
-                oldLightValue = value;
-            }  
-        return round((value * 0.3921));
-        */
         int value= 0;
-       //uBit.display.setDisplayMode(DISPLAY_MODE_BLACK_AND_WHITE_LIGHT_SENSE);
+
         for (int i=0; i<5; i++){
             
             value += uBit.display.readLightLevel();
-            uBit.sleep(10);
+            uBit.sleep(15);
         }  
 
         return round(((value/5) * 0.3921));
@@ -99,6 +101,11 @@ int getgStrength()
   return (int) sqrt(x*x + y*y + z*z);
 }
 
+//Diese Funktion ermittelt die Temperatur und korrigiert die Messabweichung
+int selfTempImpl(){
+    return (int) (1.053*(uBit.thermometer.getTemperature())-2.526) ;
+}
+
 //Sobald ein Geraet mit dem Calliope verbunden ist, wird diese Funktion aufgerufen (siehe main) --> messageBus.listen 
 // Hier werden Mikro, Temperatur, Licht, Kompass-und Beschleunigungssensor ausgelesen und über Bluetooth verschickt
 void onConnected(MicroBitEvent)
@@ -134,26 +141,25 @@ void onConnected(MicroBitEvent)
 
         //Diese Funktion ist für den Empfang von einem Zeichen
         //msg = uart->read(1,ASYNC);
-        //uBit.display.scroll(msg);
 
         */
 
-        ManagedString msg_micro = ManagedString("M:")+ ManagedString(selfMicroImpl());
-        ManagedString msg_temp = ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature());
+        msg_micro = ManagedString("M:")+ ManagedString(selfMicroImpl());
+        msg_temp = ManagedString("T:")+ ManagedString(selfTempImpl());
+        msg_comp = ManagedString("C:")+ ManagedString(uBit.compass.heading());
+        msg_accx = ManagedString("AX:") +  ManagedString(uBit.accelerometer.getX()); 
+        msg_accy = ManagedString("AY:") +  ManagedString(uBit.accelerometer.getY()); 
+        msg_accz = ManagedString("AZ:") +  ManagedString(uBit.accelerometer.getZ()); 
+        msg_accs = ManagedString("AS:") +  ManagedString(getgStrength()); 
+        msg_buttonA = ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed());  
+        msg_buttonB= ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed());
     
+        //Licht nur jedes dritte mal lesen
         if (lightCount >= 3){
-            msg_light = ManagedString("L:")+ ManagedString(getLightValue());
-            lightCount = 0; 
+          msg_light = ManagedString("L:")+ ManagedString(getLightValue());
+          lightCount = 0; 
             }
         lightCount+=1;
-         
-        ManagedString msg_comp = ManagedString("C:")+ ManagedString(uBit.compass.heading());
-        ManagedString msg_accx = ManagedString("AX:") +  ManagedString(uBit.accelerometer.getX()); 
-        ManagedString msg_accy = ManagedString("AY:") +  ManagedString(uBit.accelerometer.getY()); 
-        ManagedString msg_accz = ManagedString("AZ:") +  ManagedString(uBit.accelerometer.getZ()); 
-        ManagedString msg_accs = ManagedString("AS:") +  ManagedString(getgStrength()); 
-        ManagedString msg_buttonA = ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed());  
-        ManagedString msg_buttonB= ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed());
 
         uart->send(
             msg_micro + 
@@ -162,7 +168,8 @@ void onConnected(MicroBitEvent)
             msg_comp, 
             SYNC_SLEEP );
         
-        uBit.sleep(20);
+        fiber_sleep(10);
+        //uBit.sleep(20);
 
         uart->send(
             msg_accx +
@@ -170,7 +177,8 @@ void onConnected(MicroBitEvent)
             msg_accz, 
             SYNC_SLEEP );
 
-        uBit.sleep(20);
+        fiber_sleep(10);
+        //uBit.sleep(20);
 
         uart->send(
             msg_accs +
@@ -179,7 +187,8 @@ void onConnected(MicroBitEvent)
             ManagedString("\r\n"),
             SYNC_SLEEP );
         
-        uBit.sleep(50);
+        fiber_sleep(10);
+        //uBit.sleep(50);
     }
 }
 
@@ -187,9 +196,10 @@ void onConnected(MicroBitEvent)
 void onDisconnected(MicroBitEvent)
 {
     connected = false;
-    uBit.rgb.setColour(0xff, 0x66, 0x66, 0xff);
+    uBit.rgb.setColour(0xfa, 0x80, 0x72, 0xff);
     uBit.display.print("D");
-    uBit.sleep(5000);
+    fiber_sleep(5000);
+    //uBit.sleep(5000);
     uBit.reset();  
 }
 
@@ -200,16 +210,19 @@ int main()
     //Initialisierung der UBit Umgebung
     uBit.init();
 
+   //WHITE
+    uBit.rgb.setColour(0xff, 0xff, 0xff, 0x0a);
 
     //Compass jedesmal neu kalibrieren
     //uBit.compass.calibrate();
     //Compass einmalig kalibrieren
     uBit.compass.heading();
 
+   //Green
+    uBit.rgb.setColour(0x22, 0x8b, 0x22, 0xff);
     startingSound();
 
-    //WHITE
-    uBit.rgb.setColour(0xff, 0xff, 0xff, 0x0a);
+ 
     //In diesen Zeilen sind die MessageBus Listener definiert. 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
