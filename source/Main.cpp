@@ -116,32 +116,8 @@ void onConnected(MicroBitEvent)
 
     while(connected) {
         /*
-        uart->send(
-        ManagedString("M:")+ ManagedString(selfMicroImpl()) +
-        ManagedString("T:")+ ManagedString(uBit.thermometer.getTemperature()) + 
-        ManagedString("L:")+ ManagedString(getLightValue()) + 
-        ManagedString("C:")+ ManagedString(uBit.compass.heading()) , 
-        SYNC_SLEEP );
-        uBit.sleep(20);
-
-        uart->send( 
-        ManagedString("AX:") +  ManagedString(uBit.accelerometer.getX()) +
-        ManagedString("AY:") +  ManagedString(uBit.accelerometer.getY()) + 
-        ManagedString("AZ:") +  ManagedString(uBit.accelerometer.getZ()) , 
-        SYNC_SLEEP );
-        uBit.sleep(20);
-
-        uart->send( 
-        ManagedString("AS:") +  ManagedString(getgStrength()) + 
-        ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed()) +  
-        ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed()) +
-        ManagedString("\r\n") ,
-        SYNC_SLEEP );
-        
-
         //Diese Funktion ist für den Empfang von einem Zeichen
         //msg = uart->read(1,ASYNC);
-
         */
 
         msg_micro = ManagedString("M:")+ ManagedString(selfMicroImpl());
@@ -154,7 +130,7 @@ void onConnected(MicroBitEvent)
         msg_buttonA = ManagedString("BA:") + ManagedString(uBit.buttonA.isPressed());  
         msg_buttonB= ManagedString("BB:") + ManagedString(uBit.buttonB.isPressed());
     
-        //Licht nur jedes dritte mal lesen
+        //Lichtsensor nur jedes dritte mal auslesen
         if (lightCount >= 3){
           msg_light = ManagedString("L:")+ ManagedString(getLightValue());
           lightCount = 0; 
